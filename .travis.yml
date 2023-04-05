@@ -8,7 +8,7 @@ before_install:
 
 
 script: 
-  - docker run mohamedmedhat96/react-test npm test
+  - docker run -e CI=true mohamedmedhat96/react-test npm test
 
 
 after_sucess:
@@ -16,3 +16,8 @@ after_sucess:
   - docker build -t mohamedmedhat96/multi-nginx ./nginx
   - docker build -t mohamedmedhat96/multi-server ./server
   - docker build -t mohamedmedhat96/multi-worker ./worker
+  - echo '$DOCKER_PASSWORD' | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push mohamedmedhat96/multi-client
+  - docker push mohamedmedhat96/multi-worker
+  - docker push mohamedmedhat96/multi-server
+  - docker push mohamedmedhat96/multi-nginx
